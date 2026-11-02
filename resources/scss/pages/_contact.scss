@@ -1,0 +1,46 @@
+.contact-page__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+}
+
+.contact-info h1 {
+  margin: 0.5rem 0 1rem;
+}
+
+.contact-info p.body {
+  margin-bottom: 2rem;
+}
+
+.contact-info__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  strong {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  a,
+  span {
+    font-size: 1.0625rem;
+  }
+
+  a:hover {
+    color: var(--maroon);
+  }
+}
+
+@media (max-width: 860px) {
+  .contact-page__layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

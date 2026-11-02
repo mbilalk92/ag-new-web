@@ -1,0 +1,48 @@
+// Type scale after Bringhurst: roughly a fifth (1.2) ratio, tightened at
+// the top where Fraunces' optical weight already carries plenty of size.
+
+h1,
+.h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+h2,
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+}
+
+h3,
+.h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  color: var(--maroon);
+}
+
+p,
+.body {
+  max-width: 38em;
+  color: var(--text-muted);
+}
+
+.price {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}

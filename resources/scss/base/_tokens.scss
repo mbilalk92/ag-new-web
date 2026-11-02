@@ -1,0 +1,36 @@
+// Asian Groom — design tokens
+// Jewel-toned wedding palette: ink, oxblood, antique gold, ivory, emerald.
+// Deliberately not the generic AI cream/terracotta pairing — this is groom's
+// wedding wear, so the palette is drawn from bridal textiles instead.
+
+:root {
+  --ink: #1b1511;
+  --ink-soft: #2a2220;
+  --maroon: #6e1423;
+  --maroon-deep: #4a0e18;
+  --gold: #b08d3d;
+  --gold-soft: #d6b872;
+  --ivory: #f3ede3;
+  --ivory-dim: #e9e0d2;
+  --sand: #e4d9c4;
+  --emerald: #1f4b3f;
+
+  --surface: var(--ivory);
+  --surface-raised: #ffffff;
+  --text-primary: var(--ink);
+  --text-muted: #6b5f55;
+  --text-on-dark: var(--ivory);
+  --border-subtle: rgba(27, 21, 17, 0.12);
+  --border-strong: rgba(27, 21, 17, 0.24);
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --max-width: 1360px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  --ease-standard: cubic-bezier(0.2, 0.7, 0.3, 1);
+}

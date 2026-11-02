@@ -1,0 +1,9 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+section + section {
+  margin-top: 0;
+}

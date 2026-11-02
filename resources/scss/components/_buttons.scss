@@ -1,0 +1,36 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 1px solid transparent;
+  transition: background 0.18s var(--ease-standard), color 0.18s var(--ease-standard), border-color 0.18s var(--ease-standard);
+}
+
+.btn--primary {
+  background: var(--maroon);
+  color: var(--ivory);
+
+  &:hover {
+    background: var(--maroon-deep);
+  }
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+
+  &:hover {
+    border-color: var(--maroon);
+    color: var(--maroon);
+  }
+}
+
+.btn--block {
+  width: 100%;
+}
