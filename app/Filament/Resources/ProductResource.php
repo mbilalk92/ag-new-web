@@ -90,6 +90,19 @@ class ProductResource extends Resource
                             ->label('Visible in store')
                             ->default(true),
                     ]),
+                Forms\Components\Section::make('SEO')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_title')
+                            ->label('Meta title')
+                            ->maxLength(255)
+                            ->helperText('Leave blank to use the product name.'),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->label('Meta description')
+                            ->rows(2)
+                            ->maxLength(320)
+                            ->helperText('Leave blank to use the product description.'),
+                    ]),
                 Forms\Components\Section::make('Photos')
                     ->description('Upload the product photos that appear in the Pinterest-style feed and gallery. Order matters.')
                     ->schema([

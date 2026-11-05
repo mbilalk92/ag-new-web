@@ -14,6 +14,7 @@ class Bundle extends Model
         'name', 'slug', 'description', 'included_items', 'sizes', 'measurement_type',
         'price', 'compare_at_price', 'video_file', 'video_url',
         'is_featured', 'is_active', 'sort_order',
+        'meta_title', 'meta_description',
     ];
 
     protected $casts = [

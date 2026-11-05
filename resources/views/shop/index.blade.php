@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Shop — Asian Groom')
+@section('title', $activeCategoryModel?->meta_title ?: ($activeCategoryModel ? $activeCategoryModel->name . ' — Asian Groom' : 'Shop — Asian Groom'))
+@section('meta_description', $activeCategoryModel?->meta_description ?: ($activeCategoryModel ? 'Shop ' . $activeCategoryModel->name . ' at Asian Groom.' : 'Browse sherwanis, kurtas, waistcoats, and groom\'s wear for every function — Asian Groom.'))
 
 @section('content')
     <div class="container shop">

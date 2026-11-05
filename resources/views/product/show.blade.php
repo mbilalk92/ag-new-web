@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', $product->name . ' — Asian Groom')
-@section('meta_description', \Illuminate\Support\Str::limit($product->description, 150))
+@section('title', $product->meta_title ?: $product->name . ' — Asian Groom')
+@section('meta_description', $product->meta_description ?: \Illuminate\Support\Str::limit($product->description, 150))
+@section('og_image', $product->images->first() ? asset('storage/' . $product->images->first()->path) : '')
 
 @section('content')
     <div class="container product-page">

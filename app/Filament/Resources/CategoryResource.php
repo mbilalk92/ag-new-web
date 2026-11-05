@@ -49,6 +49,16 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('sort_order')
                     ->numeric()
                     ->default(0),
+                Forms\Components\Section::make('SEO')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_title')
+                            ->maxLength(255)
+                            ->helperText('Leave blank to use the category name.'),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->rows(2)
+                            ->maxLength(320),
+                    ]),
             ]);
     }
 

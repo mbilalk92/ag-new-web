@@ -31,7 +31,6 @@ if (menuToggle && primaryNav) {
 
 // Cart drawer
 const cartDrawer = qs('#cart-drawer');
-const cartTrigger = qs('.site-header__cart');
 const cartClose = qs('#cart-drawer-close');
 
 function openCartDrawer() {
@@ -42,6 +41,10 @@ function openCartDrawer() {
 function closeCartDrawer() {
     cartDrawer?.classList.remove('is-open');
     cartDrawer?.setAttribute('aria-hidden', 'true');
+}
+
+function bindCartDrawerClose() {
+    qs('#cart-drawer-close')?.addEventListener('click', closeCartDrawer);
 }
 
 cartClose?.addEventListener('click', closeCartDrawer);
@@ -102,10 +105,6 @@ qsa('.add-to-cart-form').forEach((form) => {
     });
 });
 
-function bindCartDrawerClose() {
-    qs('#cart-drawer-close')?.addEventListener('click', closeCartDrawer);
-}
-
 // Checkout: reveal bank details only when bank transfer is selected
 const paymentInputs = qsa('input[name="payment_method"]');
 const bankDetails = qs('#bank-details');
@@ -119,40 +118,64 @@ function syncPaymentFields() {
 paymentInputs.forEach((input) => input.addEventListener('change', syncPaymentFields));
 syncPaymentFields();
 
-// Sizing: toggle between a standard size and custom measurements
-qsa('[data-sizing]').forEach((container) => {
-    const standardBlock = qs('[data-standard-sizing]', container);
-    const customBlock = qs('[data-custom-sizing]', container);
-    const modeInput = qs('[data-sizing-mode]', container);
-    const toggles = qsa('[data-sizing-toggle]', container);
+// Sizing: toggle between a standard size and custom measurements. Reusable
+// so it also wires up the sizing form inside the shop-the-look modal.
+function bindSizingToggles(root = document) {
+    qsa('[data-sizing]', root).forEach((container) => {
+        if (container.dataset.sizingBound) return;
+        container.dataset.sizingBound = 'true';
 
-    if (!modeInput || (!standardBlock && !customBlock)) return;
+        const standardBlock = qs('[data-standard-sizing]', container);
+        const customBlock = qs('[data-custom-sizing]', container);
+        const modeInput = qs('[data-sizing-mode]', container);
+        const toggles = qsa('[data-sizing-toggle]', container);
 
-    function setMode(mode) {
-        modeInput.value = mode;
+        if (!modeInput || (!standardBlock && !customBlock)) return;
 
-        if (standardBlock) {
-            standardBlock.hidden = mode !== 'standard';
-            qsa('input', standardBlock).forEach((input) => {
-                input.disabled = mode !== 'standard';
-                input.required = mode === 'standard';
-            });
+        function setMode(mode) {
+            modeInput.value = mode;
+
+            if (standardBlock) {
+                standardBlock.hidden = mode !== 'standard';
+                qsa('input', standardBlock).forEach((input) => {
+                    input.disabled = mode !== 'standard';
+                    input.required = mode === 'standard';
+                });
+            }
+
+            if (customBlock) {
+                customBlock.hidden = mode !== 'custom';
+                qsa('input', customBlock).forEach((input) => {
+                    input.disabled = mode !== 'custom';
+                });
+            }
         }
 
-        if (customBlock) {
-            customBlock.hidden = mode !== 'custom';
-            qsa('input', customBlock).forEach((input) => {
-                input.disabled = mode !== 'custom';
+        toggles.forEach((toggle) => {
+            toggle.addEventListener('click', () => {
+                setMode(modeInput.value === 'standard' ? 'custom' : 'standard');
             });
-        }
-    }
-
-    toggles.forEach((toggle) => {
-        toggle.addEventListener('click', () => {
-            setMode(modeInput.value === 'standard' ? 'custom' : 'standard');
         });
     });
-});
+}
+
+bindSizingToggles();
+
+// Scroll-reveal: fade/slide in feed items as they enter the viewport.
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+function observeReveals(root = document) {
+    qsa('.reveal', root).forEach((el) => revealObserver.observe(el));
+}
+
+observeReveals();
 
 // Lightbox: click any [data-lightbox-group] element to open a full-screen
 // viewer that can navigate to the other items sharing its group name.
@@ -210,15 +233,24 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') stepLightbox(1);
 });
 
-qsa('[data-lightbox-group]').forEach((trigger) => {
-    trigger.style.cursor = 'pointer';
-    trigger.addEventListener('click', () => {
-        const group = trigger.dataset.lightboxGroup;
-        const groupEls = qsa(`[data-lightbox-group="${group}"]`);
-        const items = groupEls.map((el) => ({ src: el.dataset.lightboxSrc, alt: el.dataset.lightboxAlt || '' }));
-        openLightbox(items, groupEls.indexOf(trigger));
+function bindLightboxTriggers(root = document) {
+    qsa('[data-lightbox-group]', root).forEach((trigger) => {
+        if (trigger.dataset.lightboxBound) return;
+        trigger.dataset.lightboxBound = 'true';
+        trigger.style.cursor = 'pointer';
+
+        trigger.addEventListener('click', (event) => {
+            if (event.target.closest('[data-shop-look]')) return;
+
+            const group = trigger.dataset.lightboxGroup;
+            const groupEls = qsa(`[data-lightbox-group="${group}"]`);
+            const items = groupEls.map((el) => ({ src: el.dataset.lightboxSrc, alt: el.dataset.lightboxAlt || '' }));
+            openLightbox(items, groupEls.indexOf(trigger));
+        });
     });
-});
+}
+
+bindLightboxTriggers();
 
 // Product/bundle gallery: open the lightbox from the main image, navigating
 // through whichever photo is currently swapped in via the thumbnails.
@@ -260,3 +292,114 @@ qsa('.product-gallery__thumb').forEach((thumb) => {
         }
     });
 });
+
+// Shop the look: clicking the hover button on a client-diary photo opens a
+// popup asking for the shopper's details and sizing, pre-filled with which
+// photo they're interested in.
+const lookModal = qs('#look-modal');
+const lookModalImage = qs('#look-modal-image');
+const lookModalPhotoId = qs('#look-modal-photo-id');
+const lookModalClose = qs('#look-modal-close');
+
+function openLookModal(photoId, photoSrc) {
+    if (!lookModal) return;
+    if (lookModalPhotoId) lookModalPhotoId.value = photoId || '';
+    if (lookModalImage) {
+        lookModalImage.src = photoSrc || '';
+        lookModalImage.alt = '';
+    }
+    lookModal.classList.add('is-open');
+    lookModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLookModal() {
+    if (!lookModal) return;
+    lookModal.classList.remove('is-open');
+    lookModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+lookModalClose?.addEventListener('click', closeLookModal);
+lookModal?.addEventListener('click', (event) => {
+    if (event.target === lookModal) closeLookModal();
+});
+document.addEventListener('keydown', (event) => {
+    if (lookModal?.classList.contains('is-open') && event.key === 'Escape') closeLookModal();
+});
+
+function bindShopLookTriggers(root = document) {
+    qsa('[data-shop-look]', root).forEach((button) => {
+        if (button.dataset.shopLookBound) return;
+        button.dataset.shopLookBound = 'true';
+
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openLookModal(button.dataset.photoId, button.dataset.photoSrc);
+        });
+    });
+}
+
+bindShopLookTriggers();
+
+// Client diaries: load more photos as the user scrolls, or via the
+// "Load more" button fallback. Newly appended items join the reveal
+// animation, lightbox, and shop-the-look wiring automatically.
+const diaryFeed = qs('#diary-feed');
+
+if (diaryFeed) {
+    const loader = qs('#feed-loader');
+    const loadMoreButton = qs('#feed-load-more');
+    const moreUrl = diaryFeed.dataset.moreUrl;
+    let isLoading = false;
+
+    async function loadNextPage() {
+        const nextPage = diaryFeed.dataset.nextPage;
+        if (!nextPage || !moreUrl || isLoading) return;
+
+        isLoading = true;
+        if (loader) loader.hidden = false;
+
+        try {
+            const response = await fetch(`${moreUrl}?page=${nextPage}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            });
+
+            if (!response.ok) throw new Error('Failed to load more photos');
+
+            const hasMore = response.headers.get('X-Has-More-Pages') === '1';
+            const html = await response.text();
+            const temp = document.createElement('div');
+            temp.innerHTML = html.trim();
+            const newItems = Array.from(temp.children);
+
+            newItems.forEach((item) => diaryFeed.appendChild(item));
+            observeReveals(diaryFeed);
+            bindShopLookTriggers(diaryFeed);
+            bindLightboxTriggers(diaryFeed);
+
+            diaryFeed.dataset.nextPage = hasMore ? String(Number(nextPage) + 1) : '';
+        } catch (error) {
+            // Leave nextPage as-is so the user (or the next scroll event) can retry.
+        } finally {
+            isLoading = false;
+            if (loader) loader.hidden = true;
+            if (!diaryFeed.dataset.nextPage && loadMoreButton) loadMoreButton.hidden = true;
+        }
+    }
+
+    loadMoreButton?.addEventListener('click', loadNextPage);
+
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    diaryFeed.insertAdjacentElement('afterend', sentinel);
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) loadNextPage();
+        });
+    }, { rootMargin: '600px 0px' });
+
+    scrollObserver.observe(sentinel);
+}

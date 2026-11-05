@@ -88,6 +88,16 @@ class BundleResource extends Resource
                             ->label('Visible in store')
                             ->default(true),
                     ]),
+                Forms\Components\Section::make('SEO')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_title')
+                            ->maxLength(255)
+                            ->helperText('Leave blank to use the bundle name.'),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->rows(2)
+                            ->maxLength(320),
+                    ]),
                 Forms\Components\Section::make('Photos')
                     ->schema([
                         Forms\Components\Repeater::make('images')

@@ -15,7 +15,10 @@ class ShopController extends Controller
             ->with(['images', 'category'])
             ->where('is_active', true);
 
+        $activeCategoryModel = null;
+
         if ($categorySlug = $request->get('category')) {
+            $activeCategoryModel = Category::where('slug', $categorySlug)->first();
             $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
         }
 
@@ -39,6 +42,7 @@ class ShopController extends Controller
             'categories' => $categories,
             'occasions' => $occasions,
             'activeCategory' => $categorySlug,
+            'activeCategoryModel' => $activeCategoryModel,
             'activeOccasion' => $occasionSlug,
             'sort' => $sort,
         ]);

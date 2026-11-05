@@ -4,15 +4,28 @@
 
 @section('content')
     <div class="container cart-page">
-        <h1 class="h2">Your cart</h1>
-
         @if (session('status'))
             <p class="alert alert--success">{{ session('status') }}</p>
         @endif
 
         @if (empty($items))
-            <p class="body">Your cart is empty. <a href="{{ route('shop.index') }}">Continue shopping</a>.</p>
+            <div class="cart-empty">
+                <span class="cart-empty__icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                        <path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20 8H6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="9" cy="20" r="1.4"/>
+                        <circle cx="17" cy="20" r="1.4"/>
+                    </svg>
+                </span>
+                <h1 class="h2">Your cart is empty</h1>
+                <p class="body">Browse sherwanis, kurtas, and wedding bundles to find your look.</p>
+                <div class="cart-empty__actions">
+                    <a href="{{ route('shop.index') }}" class="btn btn--primary">Shop the collection</a>
+                    <a href="{{ route('bundle.index') }}" class="btn btn--outline">View bundles</a>
+                </div>
+            </div>
         @else
+            <h1 class="h2">Your cart</h1>
             <div class="cart-table">
                 @foreach ($items as $key => $item)
                     <div class="cart-table__row">

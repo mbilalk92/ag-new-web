@@ -80,6 +80,63 @@
   break-inside: avoid;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.feed-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.feed-loader__spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--maroon);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.feed-load-more {
+  display: flex;
+  margin: 0 auto 3rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
 .feed-card {
   position: relative;
   display: block;
@@ -131,6 +188,49 @@
 .feed-card__price {
   font-size: 0.875rem;
   color: var(--gold-soft);
+}
+
+.feed-card__shop-look {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  background: var(--ivory);
+  color: var(--ink);
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease-standard), transform 0.2s var(--ease-standard);
+  box-shadow: 0 10px 24px rgba(27, 21, 17, 0.28);
+}
+
+.feed-card--static:hover .feed-card__shop-look,
+.feed-card--static:focus-within .feed-card__shop-look {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.feed-card--static:hover .feed-card__shop-look:hover {
+  background: var(--maroon);
+  color: var(--ivory);
+}
+
+@media (hover: none) {
+  .feed-card__shop-look {
+    opacity: 1;
+    pointer-events: auto;
+    top: auto;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    transform: none;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.9rem;
+  }
 }
 
 .feed-card__badge {

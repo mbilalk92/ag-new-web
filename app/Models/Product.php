@@ -16,6 +16,7 @@ class Product extends Model
         'category_id', 'name', 'slug', 'sku', 'description', 'fabric_details',
         'price', 'sale_price', 'sizes', 'stock', 'video_file', 'video_url',
         'allow_custom_sizing', 'is_featured', 'is_active',
+        'meta_title', 'meta_description',
     ];
 
     protected $casts = [

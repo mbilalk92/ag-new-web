@@ -8,27 +8,25 @@
         <div class="feed-hero__intro">
             <p class="eyebrow">Real clients, real functions</p>
             <h1 class="h1">Client diaries.</h1>
-            <p class="body">A look back at grooms who trusted us with their barat, nikkah, valima, and mehndi looks.</p>
+            <p class="body">A look back at grooms who trusted us with their barat, nikkah, valima, and mehndi looks. Spot something you like? Hover a photo and shop the look.</p>
         </div>
 
-        <div class="feed">
-            @forelse ($photos as $photo)
-                <div class="feed__item">
-                    <div class="feed-card feed-card--static"
-                         data-lightbox-group="client-diaries"
-                         data-lightbox-src="{{ asset('storage/' . $photo->path) }}"
-                         data-lightbox-alt="{{ $photo->caption ?? 'Asian Groom client' }}">
-                        <img src="{{ asset('storage/' . $photo->path) }}" alt="{{ $photo->caption ?? 'Asian Groom client' }}" loading="lazy" width="{{ $photo->width }}" height="{{ $photo->height }}">
-                        @if ($photo->caption)
-                            <span class="feed-card__overlay">
-                                <span class="feed-card__name">{{ $photo->caption }}</span>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                <p class="body">No client photos yet.</p>
-            @endforelse
+        @if (session('status'))
+            <p class="alert alert--success">{{ session('status') }}</p>
+        @endif
+
+        <div class="feed" id="diary-feed" data-next-page="{{ $photos->hasMorePages() ? 2 : '' }}" data-more-url="{{ route('client-diaries.more') }}">
+            @include('partials.client-diary-items', ['photos' => $photos])
         </div>
+
+        <div class="feed-loader" id="feed-loader" hidden>
+            <span class="feed-loader__spinner"></span> Loading more…
+        </div>
+
+        @if ($photos->hasMorePages())
+            <button type="button" class="btn btn--outline feed-load-more" id="feed-load-more">Load more</button>
+        @endif
     </div>
+
+    @include('partials.shop-the-look-modal')
 @endsection
