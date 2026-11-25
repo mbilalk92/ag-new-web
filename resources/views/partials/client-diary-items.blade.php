@@ -1,6 +1,7 @@
 @foreach ($photos as $photo)
     <div class="feed__item reveal">
         <div class="feed-card feed-card--static"
+             data-skeleton
              data-lightbox-group="client-diaries"
              data-lightbox-src="{{ asset('storage/' . $photo->path) }}"
              data-lightbox-alt="{{ $photo->caption ?? 'Asian Groom client' }}">

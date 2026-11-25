@@ -16,6 +16,7 @@ class ShopController extends Controller
             ->where('is_active', true);
 
         $activeCategoryModel = null;
+        $activeOccasionModel = null;
 
         if ($categorySlug = $request->get('category')) {
             $activeCategoryModel = Category::where('slug', $categorySlug)->first();
@@ -23,6 +24,7 @@ class ShopController extends Controller
         }
 
         if ($occasionSlug = $request->get('occasion')) {
+            $activeOccasionModel = Occasion::where('slug', $occasionSlug)->first();
             $query->whereHas('occasions', fn ($q) => $q->where('slug', $occasionSlug));
         }
 
@@ -44,6 +46,7 @@ class ShopController extends Controller
             'activeCategory' => $categorySlug,
             'activeCategoryModel' => $activeCategoryModel,
             'activeOccasion' => $occasionSlug,
+            'activeOccasionModel' => $activeOccasionModel,
             'sort' => $sort,
         ]);
     }

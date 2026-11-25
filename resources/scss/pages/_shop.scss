@@ -23,6 +23,62 @@
   }
 }
 
+.shop__active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+
+.shop__active-filters-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  font-size: 0.8125rem;
+  font-weight: 500;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 0.875rem;
+    line-height: 1;
+    color: var(--text-muted);
+  }
+
+  &:hover {
+    border-color: var(--maroon);
+    color: var(--maroon);
+
+    span {
+      color: var(--maroon);
+    }
+  }
+}
+
+.filter-tag--clear {
+  background: none;
+  border-style: dashed;
+  color: var(--text-muted);
+
+  &:hover {
+    color: var(--maroon);
+  }
+}
+
 .shop__layout {
   display: grid;
   grid-template-columns: 220px 1fr;

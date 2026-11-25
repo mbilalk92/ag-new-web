@@ -33,6 +33,10 @@ class ProductResource extends Resource
                             ->relationship('occasions', 'name')
                             ->multiple()
                             ->preload(),
+                        Forms\Components\Select::make('collections')
+                            ->relationship('collections', 'name')
+                            ->multiple()
+                            ->preload(),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255)

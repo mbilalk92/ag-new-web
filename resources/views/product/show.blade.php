@@ -14,7 +14,7 @@
 
         <div class="product-page__layout">
             <div class="product-gallery">
-                <div class="product-gallery__main" data-zoom-container>
+                <div class="product-gallery__main" data-zoom-container data-skeleton data-gallery-main-wrap>
                     <img src="{{ asset('storage/' . $product->images->first()?->path) }}" alt="{{ $product->name }}" id="gallery-main" data-gallery-main>
                     <span class="product-gallery__hint">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/><path d="M11 8v6M8 11h6" stroke-linecap="round"/></svg>
@@ -24,7 +24,7 @@
                 @if ($product->images->count() > 1)
                     <div class="product-gallery__thumbs">
                         @foreach ($product->images as $image)
-                            <button type="button" class="product-gallery__thumb" data-src="{{ asset('storage/' . $image->path) }}">
+                            <button type="button" class="product-gallery__thumb" data-src="{{ asset('storage/' . $image->path) }}" data-skeleton>
                                 <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $product->name }}">
                             </button>
                         @endforeach

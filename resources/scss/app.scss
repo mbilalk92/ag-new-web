@@ -9,16 +9,19 @@
 @import 'components/buttons';
 @import 'components/forms';
 @import 'components/misc';
+@import 'components/skeleton';
 @import 'components/feed';
 @import 'components/product-card';
 @import 'components/cart-drawer';
 @import 'components/lightbox';
 @import 'components/look-modal';
 
+@import 'pages/collection';
 @import 'pages/shop';
 @import 'pages/product';
 @import 'pages/cart';
 @import 'pages/checkout';
 @import 'pages/contact';
+@import 'pages/size-guide';
 @import 'pages/error';
 @import 'pages/sitemap';

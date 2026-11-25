@@ -1,6 +1,6 @@
 @php($image = $product->images->first())
-<a href="{{ route('product.show', $product->slug) }}" class="product-card">
-    <div class="product-card__image">
+<a href="{{ route('product.show', $product->slug) }}" class="product-card reveal">
+    <div class="product-card__image" data-skeleton>
         @if ($image)
             <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $product->name }}" loading="lazy">
         @endif

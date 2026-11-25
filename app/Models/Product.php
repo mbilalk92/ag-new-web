@@ -41,6 +41,11 @@ class Product extends Model
         return $this->belongsToMany(Occasion::class);
     }
 
+    public function collections(): BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class);
+    }
+
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);

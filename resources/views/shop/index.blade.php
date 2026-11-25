@@ -19,6 +19,30 @@
             </form>
         </div>
 
+        @if ($activeCategoryModel || $activeOccasionModel)
+            <div class="shop__active-filters">
+                <span class="shop__active-filters-label">Filtered by</span>
+
+                @if ($activeCategoryModel)
+                    <a href="{{ route('shop.index', array_filter(['occasion' => $activeOccasion])) }}" class="filter-tag" aria-label="Remove {{ $activeCategoryModel->name }} filter">
+                        {{ $activeCategoryModel->name }}
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                @endif
+
+                @if ($activeOccasionModel)
+                    <a href="{{ route('shop.index', array_filter(['category' => $activeCategory])) }}" class="filter-tag" aria-label="Remove {{ $activeOccasionModel->name }} filter">
+                        {{ $activeOccasionModel->name }}
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                @endif
+
+                @if ($activeCategoryModel && $activeOccasionModel)
+                    <a href="{{ route('shop.index') }}" class="filter-tag filter-tag--clear">Clear all</a>
+                @endif
+            </div>
+        @endif
+
         <div class="shop__layout">
             <aside class="shop__filters">
                 <div class="shop__filter-group">

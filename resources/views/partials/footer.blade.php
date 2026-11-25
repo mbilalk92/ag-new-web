@@ -15,6 +15,14 @@
         </div>
 
         <div class="site-footer__col">
+            <h3 class="h3">Help</h3>
+            <ul>
+                <li><a href="{{ route('size-guide') }}">Size Guide</a></li>
+                <li><a href="{{ route('contact.show') }}">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="site-footer__col">
             <h3 class="h3">Get in touch</h3>
             <ul>
                 <li><a href="tel:+923303900476">+92 330 3900476</a></li>

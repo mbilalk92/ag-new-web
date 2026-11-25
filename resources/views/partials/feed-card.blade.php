@@ -1,5 +1,5 @@
 @php($image = $product->images->first())
-<a href="{{ route('product.show', $product->slug) }}" class="feed-card">
+<a href="{{ route('product.show', $product->slug) }}" class="feed-card" data-skeleton>
     @if ($image)
         <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $product->name }}" loading="lazy" width="{{ $image->width }}" height="{{ $image->height }}">
     @endif

@@ -8,6 +8,18 @@ function qsa(selector, root = document) {
     return Array.from(root.querySelectorAll(selector));
 }
 
+// Header: swap to a frosted-glass fill once the page scrolls past the top,
+// so the bar reads as flat chrome at rest and lifts off the page once it's
+// sitting over content.
+const siteHeader = qs('.site-header');
+if (siteHeader) {
+    const updateHeaderScrollState = () => {
+        siteHeader.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    updateHeaderScrollState();
+    window.addEventListener('scroll', updateHeaderScrollState, { passive: true });
+}
+
 // Mobile nav toggle
 const menuToggle = qs('#menu-toggle');
 const primaryNav = qs('#primary-nav');
@@ -172,10 +184,37 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 function observeReveals(root = document) {
-    qsa('.reveal', root).forEach((el) => revealObserver.observe(el));
+    qsa('.reveal', root).forEach((el, i) => {
+        el.style.transitionDelay = `${Math.min(i, 8) * 60}ms`;
+        revealObserver.observe(el);
+    });
 }
 
 observeReveals();
+
+// Image skeletons: any [data-skeleton] wrapper shows a shimmer placeholder
+// until its <img> has actually finished loading, then fades the real photo
+// in. Keeps layout stable and avoids a flash of broken/empty image boxes.
+function initMediaSkeletons(root = document) {
+    qsa('[data-skeleton]', root).forEach((el) => {
+        const img = qs('img', el);
+        if (!img) {
+            el.classList.add('is-loaded');
+            return;
+        }
+
+        const markLoaded = () => el.classList.add('is-loaded');
+
+        if (img.complete && img.naturalWidth > 0) {
+            markLoaded();
+        } else {
+            img.addEventListener('load', markLoaded, { once: true });
+            img.addEventListener('error', markLoaded, { once: true });
+        }
+    });
+}
+
+initMediaSkeletons();
 
 // Lightbox: click any [data-lightbox-group] element to open a full-screen
 // viewer that can navigate to the other items sharing its group name.
@@ -285,10 +324,13 @@ qsa('[data-zoom-container]').forEach((container) => {
 
 // Product gallery thumbnail swap
 const galleryMain = qs('#gallery-main');
+const galleryMainWrap = qs('[data-gallery-main-wrap]');
 qsa('.product-gallery__thumb').forEach((thumb) => {
     thumb.addEventListener('click', () => {
         if (galleryMain) {
+            galleryMainWrap?.classList.remove('is-loaded');
             galleryMain.src = thumb.dataset.src;
+            galleryMain.addEventListener('load', () => galleryMainWrap?.classList.add('is-loaded'), { once: true });
         }
     });
 });
@@ -376,6 +418,7 @@ if (diaryFeed) {
 
             newItems.forEach((item) => diaryFeed.appendChild(item));
             observeReveals(diaryFeed);
+            initMediaSkeletons(diaryFeed);
             bindShopLookTriggers(diaryFeed);
             bindLightboxTriggers(diaryFeed);
 

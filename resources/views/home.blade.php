@@ -20,7 +20,7 @@
 
         <div class="feed">
             @foreach ($products as $product)
-                <div class="feed__item">
+                <div class="feed__item reveal">
                     @include('partials.feed-card', ['product' => $product])
                 </div>
             @endforeach

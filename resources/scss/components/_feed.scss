@@ -2,9 +2,27 @@
 // items keep their natural photo aspect ratio instead of being cropped.
 
 .feed-hero {
+  position: relative;
   padding: 2rem var(--gutter) 1rem;
   max-width: var(--max-width);
   margin: 0 auto;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    width: min(620px, 70%);
+    height: 420px;
+    background: radial-gradient(
+      circle at 20% 20%,
+      rgba(176, 141, 61, 0.08),
+      rgba(176, 141, 61, 0) 70%
+    );
+    z-index: -1;
+    pointer-events: none;
+  }
 }
 
 .feed-hero__intro {
@@ -274,10 +292,19 @@
 }
 
 .brand-strip {
-  background: var(--ink);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--ivory);
   margin-top: 4rem;
   padding: 4.5rem var(--gutter);
+  overflow: hidden;
+
+  // A single soft gold glow on the dark field — a quiet jewel-box moment
+  // for the closing CTA, without any pattern competing with the text.
+  background-color: var(--ink);
+  background-image: radial-gradient(circle at 85% 20%, rgba(214, 184, 114, 0.1), rgba(214, 184, 114, 0) 55%);
 }
 
 .brand-strip__inner {

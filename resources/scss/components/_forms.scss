@@ -96,6 +96,21 @@
   }
 }
 
+.sizing__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.sizing__guide-link {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+
+  &:hover {
+    color: var(--maroon);
+  }
+}
+
 .sizing__toggle {
   background: none;
   border: none;

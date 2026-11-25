@@ -10,9 +10,12 @@
         <div class="field-group" data-standard-sizing @if (! $hasSizes || $defaultMode === 'custom') hidden @endif>
             <div class="sizing__header">
                 <label>Size</label>
-                @if ($showToggle)
-                    <button type="button" class="sizing__toggle" data-sizing-toggle>Customize measurements</button>
-                @endif
+                <div class="sizing__header-actions">
+                    <a href="{{ route('size-guide') }}" target="_blank" class="sizing__guide-link">Size guide</a>
+                    @if ($showToggle)
+                        <button type="button" class="sizing__toggle" data-sizing-toggle>Customize measurements</button>
+                    @endif
+                </div>
             </div>
             <div class="size-options">
                 @foreach ($sizes as $size)

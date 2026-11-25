@@ -1,6 +1,6 @@
 @php($image = $bundle->images->first())
-<a href="{{ route('bundle.show', $bundle->slug) }}" class="product-card">
-    <div class="product-card__image">
+<a href="{{ route('bundle.show', $bundle->slug) }}" class="product-card reveal">
+    <div class="product-card__image" data-skeleton>
         @if ($image)
             <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $bundle->name }}" loading="lazy">
         @endif

@@ -6,10 +6,24 @@
 
         <nav class="site-header__nav" id="primary-nav">
             <a href="{{ route('shop.index') }}" class="{{ request()->routeIs('shop.index') ? 'is-active' : '' }}">Shop</a>
-            <a href="{{ route('bundle.index') }}" class="{{ request()->routeIs('bundle.*') ? 'is-active' : '' }}">Bundles</a>
 
             <div class="site-header__dropdown">
-                <button type="button" class="site-header__dropdown-trigger">Occasions</button>
+                <button type="button" class="site-header__dropdown-trigger">
+                    Collections
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="site-header__dropdown-panel">
+                    @foreach (\App\Models\Collection::where('is_active', true)->orderBy('sort_order')->get() as $collection)
+                        <a href="{{ route('collection.show', $collection->slug) }}" class="{{ request()->routeIs('collection.show') && request()->route('slug') === $collection->slug ? 'is-active' : '' }}">{{ $collection->name }}</a>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="site-header__dropdown">
+                <button type="button" class="site-header__dropdown-trigger">
+                    Occasions
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
                 <div class="site-header__dropdown-panel">
                     @foreach (\App\Models\Occasion::orderBy('sort_order')->get() as $occasion)
                         <a href="{{ route('shop.index', ['occasion' => $occasion->slug]) }}">{{ $occasion->name }}</a>
@@ -18,6 +32,7 @@
             </div>
 
             <a href="{{ route('client-diaries') }}" class="{{ request()->routeIs('client-diaries') ? 'is-active' : '' }}">Client Diaries</a>
+            <a href="{{ route('size-guide') }}" class="{{ request()->routeIs('size-guide') ? 'is-active' : '' }}">Size Guide</a>
             <a href="{{ route('contact.show') }}" class="{{ request()->routeIs('contact.show') ? 'is-active' : '' }}">Contact</a>
         </nav>
 

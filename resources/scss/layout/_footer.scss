@@ -1,7 +1,6 @@
 .site-footer {
   background: var(--ink);
   color: var(--text-on-dark);
-  margin-top: 5rem;
 }
 
 .site-footer__inner {
@@ -9,14 +8,14 @@
   margin: 0 auto;
   padding: 3.5rem var(--gutter) 2.5rem;
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
   gap: 2.5rem;
 }
 
 .site-footer__logo {
-  height: 30px;
+  height: 48px;
   width: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   filter: brightness(0) invert(1);
 }
 
