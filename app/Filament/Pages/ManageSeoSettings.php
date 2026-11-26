@@ -51,6 +51,19 @@ class ManageSeoSettings extends Page implements HasForms
                             ->directory('seo')
                             ->helperText('Shown when a page is shared on Facebook/WhatsApp/Twitter and has no image of its own. Recommended 1200×630.'),
                     ]),
+                Forms\Components\Section::make('WhatsApp widget')
+                    ->description('Powers the floating WhatsApp button shown on every page.')
+                    ->schema([
+                        Forms\Components\TextInput::make('whatsapp_number')
+                            ->label('WhatsApp number')
+                            ->placeholder('+923001234567')
+                            ->helperText('Include the country code. Digits only matter — spaces and + are stripped automatically.')
+                            ->tel(),
+                        Forms\Components\TextInput::make('whatsapp_default_message')
+                            ->label('Pre-filled message')
+                            ->maxLength(255)
+                            ->helperText('Shown in the chat box before the visitor sends it.'),
+                    ]),
                 Forms\Components\Section::make('Search console & analytics')
                     ->schema([
                         Forms\Components\TextInput::make('google_site_verification')

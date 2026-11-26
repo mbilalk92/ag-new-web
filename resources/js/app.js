@@ -20,6 +20,21 @@ if (siteHeader) {
     window.addEventListener('scroll', updateHeaderScrollState, { passive: true });
 }
 
+// Back-to-top button: appears once the page has scrolled a bit, scrolls
+// smoothly back to the top on click.
+const backToTopButton = qs('#back-to-top');
+if (backToTopButton) {
+    const updateBackToTopVisibility = () => {
+        backToTopButton.classList.toggle('is-visible', window.scrollY > 480);
+    };
+    updateBackToTopVisibility();
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
 // Mobile nav toggle
 const menuToggle = qs('#menu-toggle');
 const primaryNav = qs('#primary-nav');

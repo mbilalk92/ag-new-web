@@ -66,5 +66,6 @@
     @include('partials.footer')
     @include('partials.cart-drawer')
     @include('partials.lightbox')
+    @include('partials.floating-actions')
 </body>
 </html>
